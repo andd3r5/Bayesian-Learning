@@ -1,0 +1,399 @@
+---
+title: "Computer Lab 3"
+author: "Dhyey Patel, Erik Anders"
+date: "5/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Normal model, mixture of normal model with semi-conjugate prior.
+
+(a) Normal model.
+Assume the daily precipitation {y 1 , ..., y n } are independent normally distributed,
+$y_1,...,y_n|\mu,\sigma²\sim N(\mu,\sigma²)$ where both μ and σ 2 are unknown. Let $\mu \sim N(\mu_0,\tau_0²)$ independently of $\sigma² \sim Inv-\chi²(\nu_0,\sigma_0²)$.
+i. Implement (code!) a Gibbs sampler that simulates from the joint posterior
+p(μ, σ 2 |y 1 , ..., y n ). The full conditional posteriors are given on the slides
+from Lecture 7.
+ii. Analyze the daily precipitation using your Gibbs sampler in (a)-i. Evaluate
+the convergence of the Gibbs sampler by suitable graphical methods, for
+example by plotting the trajectories of the sampled Markov chains.
+
+```{r, echo=FALSE}
+#Lab 3
+#1.
+data <- read.table("/home/erik/Documents/SML/Semester 2/Bayesian Learning/Labs/Lab3/rainfall.dat", header = FALSE)
+y <- data$V1
+#a).
+plot(sort(data$V1))
+plot(data$V1)
+
+n <- length(data$time)
+
+tau2_0 <- 1
+mu_0 <- mean(y)
+vu_0 <- 1
+sigma2_0 <- var(y)
+
+sigma2 <- (sigma2_0*vu_0)/rchisq(n = 1, df = vu_0)
+
+# Gibbs sampling
+nDraws <- 500 # Number of draws
+gibbsDraws <- matrix(0,nDraws,2)
+convergence_m <- matrix(0,nDraws,2)
+
+for (i in 1:nDraws){
+  
+  w <- (n/sigma2)/((n/sigma2)+(1/tau2_0))
+  mu_n <- w*mean(y)+(1-w)*mu_0
+  tau2_n <- 1/((n/sigma2)+(1/tau2_0))
+  vu_n <- vu_0 + n
+  
+  mu <- rnorm(1,mu_n,tau2_n)
+  sigma2 <- (n+vu_0)/rchisq(n = 1, df = vu_0+n, ncp = (vu_0*sigma2_0+sum(y-mu)^2)/(n+vu_0))
+  
+  gibbsDraws[i,1] <- mu
+  gibbsDraws[i,2] <- sigma2
+  
+  convergence_m[i,1] <- mean(gibbsDraws[1:i,1])
+  convergence_m[i,2] <- mean(gibbsDraws[1:i,2])
+  
+}
+
+plot(gibbsDraws[,1], main = "mu", type = "l")
+plot(gibbsDraws[,2], main = "sigma2", type = "l")
+
+plot(convergence_m[,1], main = "convergence mu", type = "l")
+plot(convergence_m[,2], main = "convergence sigma2", type = "l")
+
+```
+
+(b) Mixture normal model.
+Let us now instead assume that the daily precipitation {y 1 , ..., y n } follow an iid
+two-component mixture of normals model:
+\[p(y_i|\mu, \sigma²,\pi) = \pi N(y_i|\mu_1,\sigma_1²)+(1-\pi) N(y_i|\mu_2,\sigma_2²)\],
+where
+$\mu =(\mu_1,\mu_2)$ and $\sigma²=(\sigma_1²,\sigma_2²)$.
+Use the Gibbs sampling data augmentation algorithm in NormalMixtureGibbs.R
+(available under Lecture 7 on the course page) to analyze the daily precipita-
+tion data. Set the prior hyperparameters suitably. Evaluate the convergence
+of the sampler.
+
+```{r, echo=FALSE}
+#b).
+# Estimating a simple mixture of normals
+# Author: Mattias Villani, IDA, Linkoping University. http://mattiasvillani.com
+
+##########    BEGIN USER INPUT #################
+# Data options
+x <- as.matrix(data$V1)
+
+# Model options
+nComp <- 4    # Number of mixture components
+
+# Prior options
+alpha <- 10*rep(1,nComp) # Dirichlet(alpha)
+muPrior <- rep(0,nComp) # Prior mean of mu
+tau2Prior <- rep(10,nComp) # Prior std of mu
+sigma2_0 <- rep(var(x),nComp) # s20 (best guess of sigma2)
+nu0 <- rep(4,nComp) # degrees of freedom for prior on sigma2
+
+# MCMC options
+nIter <- 100 # Number of Gibbs sampling draws
+
+# Plotting options
+plotFit <- TRUE
+lineColors <- c("blue", "green", "magenta", 'yellow')
+sleepTime <- 0.1 # Adding sleep time between iterations for plotting
+################   END USER INPUT ###############
+
+###### Defining a function that simulates from the 
+rScaledInvChi2 <- function(n, df, scale){
+  return((df*scale)/rchisq(n,df=df))
+}
+
+####### Defining a function that simulates from a Dirichlet distribution
+rDirichlet <- function(param){
+  nCat <- length(param)
+  piDraws <- matrix(NA,nCat,1)
+  for (j in 1:nCat){
+    piDraws[j] <- rgamma(1,param[j],1)
+  }
+  piDraws = piDraws/sum(piDraws) # Diving every column of piDraws by the sum of the elements in that column.
+  return(piDraws)
+}
+
+# Simple function that converts between two different representations of the mixture allocation
+S2alloc <- function(S){
+  n <- dim(S)[1]
+  alloc <- rep(0,n)
+  for (i in 1:n){
+    alloc[i] <- which(S[i,] == 1)
+  }
+  return(alloc)
+}
+
+# Initial value for the MCMC
+nObs <- length(x)
+S <- t(rmultinom(nObs, size = 1 , prob = rep(1/nComp,nComp))) # nObs-by-nComp matrix with component allocations.
+mu <- quantile(x, probs = seq(0,1,length = nComp))
+sigma2 <- rep(var(x),nComp)
+probObsInComp <- rep(NA, nComp)
+
+# Setting up the plot
+xGrid <- seq(min(x)-1*apply(x,2,sd),max(x)+1*apply(x,2,sd),length = 100)
+xGridMin <- min(xGrid)
+xGridMax <- max(xGrid)
+mixDensMean <- rep(0,length(xGrid))
+effIterCount <- 0
+ylim <- c(0,2*max(hist(x)$density))
+
+
+for (k in 1:nIter){
+  message(paste('Iteration number:',k))
+  alloc <- S2alloc(S) # Just a function that converts between different representations of the group allocations
+  nAlloc <- colSums(S)
+  print(nAlloc)
+  # Update components probabilities
+  pi <- rDirichlet(alpha + nAlloc)
+  
+  # Update mu's
+  for (j in 1:nComp){
+    precPrior <- 1/tau2Prior[j]
+    precData <- nAlloc[j]/sigma2[j]
+    precPost <- precPrior + precData
+    wPrior <- precPrior/precPost
+    muPost <- wPrior*muPrior + (1-wPrior)*mean(x[alloc == j])
+    tau2Post <- 1/precPost
+    mu[j] <- rnorm(1, mean = muPost, sd = sqrt(tau2Post))
+  }
+  
+  # Update sigma2's
+  for (j in 1:nComp){
+    sigma2[j] <- rScaledInvChi2(1, df = nu0[j] + nAlloc[j], scale = (nu0[j]*sigma2_0[j] + sum((x[alloc == j] - mu[j])^2))/(nu0[j] + nAlloc[j]))
+  }
+  
+  # Update allocation
+  for (i in 1:nObs){
+    for (j in 1:nComp){
+      probObsInComp[j] <- pi[j]*dnorm(x[i], mean = mu[j], sd = sqrt(sigma2[j]))
+    }
+    S[i,] <- t(rmultinom(1, size = 1 , prob = probObsInComp/sum(probObsInComp)))
+  }
+  
+  # Printing the fitted density against data histogram
+  if (plotFit && (k%%1 ==0)){
+    effIterCount <- effIterCount + 1
+    hist(x, breaks = 20, freq = FALSE, xlim = c(xGridMin,xGridMax), main = paste("Iteration number",k), ylim = ylim)
+    mixDens <- rep(0,length(xGrid))
+    components <- c()
+    for (j in 1:nComp){
+      compDens <- dnorm(xGrid,mu[j],sd = sqrt(sigma2[j]))
+      mixDens <- mixDens + pi[j]*compDens
+      lines(xGrid, compDens, type = "l", lwd = 2, col = lineColors[j])
+      components[j] <- paste("Component ",j)
+    }
+    mixDensMean <- ((effIterCount-1)*mixDensMean + mixDens)/effIterCount
+    
+    lines(xGrid, mixDens, type = "l", lty = 2, lwd = 3, col = 'red')
+    legend("topleft", box.lty = 1, legend = c("Data histogram",components, 'Mixture'), 
+           col = c("black",lineColors[1:nComp], 'red'), lwd = 2)
+    Sys.sleep(sleepTime)
+  }
+  
+}
+
+hist(x, breaks = 20, freq = FALSE, xlim = c(xGridMin,xGridMax), main = "Final fitted density")
+lines(xGrid, mixDensMean, type = "l", lwd = 2, lty = 4, col = "red")
+lines(xGrid, dnorm(xGrid, mean = mean(x), sd = apply(x,2,sd)), type = "l", lwd = 2, col = "blue")
+legend("topright", box.lty = 1, legend = c("Data histogram","Mixture density","Normal density"), col=c("black","red","blue"), lwd = 2)
+
+```
+
+(c) Graphical comparison.
+Plot the following densities in one figure: 1) a histogram or kernel density
+estimate of the data. 2) Normal density N (y i |μ, σ 2 ) in (a); 3) Mixture of
+normals density $p(y_i|\mu, \sigma²,\pi)$ in (b). Base your plots on the mean over all
+posterior draws.
+
+```{r, echo=FALSE}
+#c).
+hist(x, breaks = 30)
+gibbsDraws[nDraws,2]
+dnorm(0.5, mean = gibbsDraws[nDraws,1], sd = gibbsDraws[nDraws,2])
+
+#fix sigma2 in a
+```
+
+##2. Metropolis Random Walk for Poisson regression.
+
+(a) Obtain the maximum likelihood estimator of β in the Poisson regression model
+for the eBay data [Hint: glm.R, don’t forget that glm() adds its own intercept
+so don’t input the covariate Const]. Which covariates are significant?
+
+```{r, echo=FALSE}
+#2.
+#a).
+data <- read.table("/home/erik/Documents/SML/Semester 2/Bayesian Learning/Labs/Lab3/eBayNumberOfBidderData.dat", header = TRUE)
+
+poisson_beta <- glm(formula = nBids ~ . - Const, data = data, family = 'poisson')
+summary(poisson_beta)
+
+#looking at the pvalue of the z scores it appears that VerifyID, Sealed, MajBlem, LogBook and MinBidShare are significant since they are all < 0.05.
+```
+
+Looking at the pvalue of the z scores it appears that VerifyID, Sealed, MajBlem, LogBook and MinBidShare are significant since they are all < 0.05.
+
+(b) Let’s now do a Bayesian analysis of the Poisson regression. Let the prior be
+$\beta \sim N[0, 100*(X^TX)^{-1}]$
+where X is the n x p covariate matrix. This is a
+commonly used prior which is called Zellner’s g-prior. Assume first that the
+posterior density is approximately multivariate normal:
+\[\beta|y \sim N(\bar{\beta},J_y^{-1}(\bar{\beta}))\]
+where $\bar{\beta}$ is the posterior mode and $J_y^{-1}(\bar{\beta})$ is the negative Hessian at the posterior
+mode. $\bar{\beta}$ and $J_y^{-1}(\bar{\beta})$ can be obtained by numerical optimization (optim.R)
+exactly like you already did for the logistic regression in Lab 2 (but with the
+log posterior function replaced by the corresponding one for the Poisson model,
+which you have to code up.).
+
+```{r, echo=FALSE}
+#b).
+library(mvtnorm)
+X <- as.matrix(data[,2:ncol(data)])
+y <- as.matrix(data[,1])
+nPara <- dim(X)[2]
+
+
+# Setting up the prior
+mu <- as.vector(rep(0,nPara))
+# tau <- 10
+Sigma <- 100*solve(t(X)%*%X)
+betaVect <- rmvnorm(n = 1,mean = mu,sigma = 100*solve(t(X)%*%X))
+
+
+PostPoisson <- function(betaVect,y,X,Sigma){
+  nPara <- length(betaVect);
+  linPred <- X%*%betaVect;
+  # evaluating the log-likelihood
+  #logLik <- sum( linPred*y -log(1 + exp(linPred)));
+  logLik <- sum(y * linPred - exp(linPred)) 
+
+  if (abs(logLik) == Inf) logLik = -20000; # Likelihood is not finite, stear the optimizer away from here!
+      # evaluating the prior
+      logPrior <- dmvnorm(betaVect, matrix(0,nPara,1), Sigma, log = TRUE);
+      # add the log prior and log-likelihood together to get log posterior
+      return(logLik + logPrior)
+}
+
+#initVal <- as.vector(rmvnorm(n = 1, mean = rep(0,dim(x)[2]), sigma = tau^2*diag(dim(x)[2])))
+initVal <- as.vector(rep(0,dim(X)[2]))
+posterior <- optim(initVal,PostPoisson,gr=NULL,y,X,Sigma,method=c("BFGS"),control=list(fnscale=-1),hessian=TRUE)
+posterior_mode <- posterior$par
+hessian_matrix <- posterior$hessian
+hessian_sigma <- -solve(posterior$hessian)
+print("Optimal beta:")
+print(posterior_mode)
+print(hessian_sigma)
+
+```
+
+(c) Now, let’s simulate from the actual posterior of β using the Metropolis algo-
+rithm and compare with the approximate results in b). Program a general
+function that uses the Metropolis algorithm to generate random draws from an
+arbitrary posterior density. In order to show that it is a general function for
+any model, I will denote the vector of model parameters by θ. Let the proposal
+density be the multivariate normal density mentioned in Lecture 8 (random
+walk Metropolis):
+
+\[ \theta|\theta^{i-1} \sim N(\theta^{i-1}, c*\Sigma)\]
+
+where $\Sigma = J_y^{-1}(\bar{\beta})$) obtained in b). The value c is a tuning parameter and
+should be an input to your Metropolis function. The user of your Metropo-
+lis function should be able to supply her own posterior density function, not
+necessarily for the Poisson regression, and still be able to use your Metropolis
+function. This is not so straightforward, unless you have come across function
+objects in R and the triple dot ( ... ) wildcard argument. I have posted a note
+(HowToCodeRWM.pdf) on the course web page that describes how to do this
+in R.
+Now, use your new Metropolis function to sample from the posterior of β in
+the Poisson regression for the eBay dataset. Assess MCMC convergence by
+graphical methods.
+
+```{r, echo=FALSE}
+#c).
+RWMSampler <- function(logPostFunc, theta_0, hessian_sigma, c, niter, ...){
+  
+  theta <- c()
+  i <- 1
+  reject <- 0
+  while (i <= niter) {
+
+    if (i == 1) {
+      theta_p <- as.vector(rmvnorm(n = 1, mean = theta_0, sigma = c * hessian_sigma))
+      alpha <- exp(logPostFunc(theta_p, ...)-logPostFunc(mu, ...))
+    } else{
+      theta_p <- as.vector(rmvnorm(n = 1, mean = as.vector(theta[i-1,]), sigma = c * hessian_sigma)) #maybe t(theta)
+      alpha <- exp(logPostFunc(theta_p, ...)-logPostFunc(as.vector(theta[i-1,]), ...))
+    }
+    
+    if (runif(n = 1, min = 0,max = 1) <= alpha) {
+      theta <- rbind(theta, theta_p)
+      i <- i + 1
+    }else{reject <- reject + 1}
+  }
+  # theta_p <- as.vector(rmvnorm(n = 1, mean = theta_0, sigma = c * hessian_sigma))
+  # logPostFunc(theta_p, ...)
+  return(list("theta"=theta, "reject"=reject, "accept"=niter,"acceptance_rate"=(niter)/(reject+niter)))
+}
+
+X <- as.matrix(data[,2:ncol(data)])
+y <- as.matrix(data[,1])
+nPara <- dim(X)[2]
+# Setting up the prior
+mu <- as.vector(rep(0,nPara))
+Sigma <- 100*solve(t(X)%*%X)
+betaVect <- rmvnorm(n = 1,mean = mu,sigma = 100*solve(t(X)%*%X))
+
+result_poisson <- RWMSampler(PostPoisson, mu, hessian_sigma, 0.65, 1000, y, X, Sigma)
+result_poisson$theta[nrow(result_poisson$theta),]
+
+par(mar=c(5.1, 4.1, 4.1, 8.1), xpd=TRUE)
+plot(as.vector(result_poisson$theta[,1]), type = "l", ylim = c(min(result_poisson$theta),max(result_poisson$theta)), col = 1)
+for (i in 2:ncol(result_poisson$theta)) {
+  lines(result_poisson$theta[,i], col = i)
+}
+legend("topright", inset=c(-0.22,0), legend=c("Intercept", sprintf("beta[%s]",seq(1:(ncol(result_poisson$theta)-1)))),
+       col=1:ncol(result_poisson$theta), lty = 1)
+par(xpd=FALSE)
+```
+
+(d) Use the MCMC draws from c) to simulate from the predictive distribution of
+the number of bidders in a new auction with the characteristics below. Plot
+the predictive distribution. What is the probability of no bidders in this new
+auction?
+• PowerSeller = 1
+• VerifyID = 1
+• Sealed = 1
+• MinBlem = 0
+• MajBlem = 0
+• LargNeg = 0
+• LogBook = 1
+• MinBidShare = 0.5
+
+```{r, echo=FALSE}
+#d).
+x_d <- c(1,1,1,1,0,0,0,1,0.5)
+x_d %*% result_poisson$theta[nrow(result_poisson$theta),]
+```
+
+
+
+
+
+
+
+##Code Appendix
+```{r ref.label=knitr::all_labels(), echo = T, eval = F}
+```

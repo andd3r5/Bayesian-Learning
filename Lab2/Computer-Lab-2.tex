@@ -1,0 +1,525 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Computer Lab 2},
+            pdfauthor={Dhyey Patel, Erik Anders},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Computer Lab 2}
+\author{Dhyey Patel, Erik Anders}
+\date{4/29/2020}
+
+\begin{document}
+\maketitle
+
+\#\#1. Linear and polynomial regression (a) Determining the prior
+distribution of the model parameters. Use the conjugate prior for the
+linear regression model. Your task is to set the prior hyperparam- eters
+μ 0 , Ω 0 , ν 0 and σ 0 2 to sensible values. Start with μ 0 = (−10,
+100, −100) T , Ω 0 = 0.01 · I 3 , ν 0 = 4 and σ 0 2 = 1. Check if this
+prior agrees with your prior opinions by simulating draws from the joint
+prior of all parameters and for every draw compute the regression curve.
+This gives a collection of regression curves, one for each draw from the
+prior. Do the collection of curves look rea- sonable? If not, change the
+prior hyperparameters until the collection of prior regression curves
+agrees with your prior beliefs about the regression curve. {[}Hint: the
+R package mvtnorm will be handy. And use your Inv-χ 2 simulator from Lab
+1.{]}
+
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Write a program that simulates from the joint posterior distribution
+  of β 0 , β 1 ,β 2 and σ 2 . Plot the marginal posteriors for each
+  parameter as a histogram. Also produce another figure with a scatter
+  plot of the temperature data and overlay a curve for the posterior
+  median of the regression function f (time) = β 0 +β 1 ·time+β 2 ·time
+  2 , computed for every value of time. Also overlay curves for the
+  lower 2.5\% and upper 97.5\% posterior credible interval for f (time).
+  That is, compute the 95\% equal tail posterior probability intervals
+  for every value of time and then connect the lower and upper limits of
+  the interval by curves. Does the interval bands contain most of the
+  data points? Should they?
+\end{enumerate}
+
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-2-1.pdf}
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-2-2.pdf}
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-2-3.pdf}
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-2-4.pdf}
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-2-5.pdf}
+
+\#The interval bands contain most if the data points
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  It is of interest to locate the time with the highest expected
+  temperature (that is, the time where f (time) is maximal). Let's call
+  this value x̃. Use the simulations in b) to simulate from the posterior
+  distribution of x̃. {[}Hint: the regression curve is a quadratic. You
+  can find a simple formula for x̃ given β 0 , β 1 and β 2 .{]}
+\end{enumerate}
+
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Say now that you want to estimate a polynomial model of order 7, but
+  you suspect that higher order terms may not be needed, and you worry
+  about over- fitting. Suggest a suitable prior that mitigates this
+  potential problem. You do not need to compute the posterior, just
+  write down your prior. {[}Hint: the task is to specify μ 0 and Ω 0 in
+  a smart way.{]}
+\end{enumerate}
+
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+We want to reduce the impact of higher order terms in the polynomial
+model of order 7. We have already seen in the first part that the
+intercept, time and time squared term are necessary and so we try to
+reduce the impact of the other higher order terms. We can do that by
+taking the means and variances close to 0. Hence we take mu0 as very
+small and omega0 as large values, as omega0 inverse is the multiplying
+factor in the variance. Hence large values of omega0 for the higher
+order terms will give very low variance.
+
+\hypertarget{posterior-approximation-for-classification-with-logistic-regression}{%
+\subsection{2. Posterior approximation for classification with logistic
+regression}\label{posterior-approximation-for-classification-with-logistic-regression}}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  Consider the logistic regression  exp x T β , Pr(y = 1\textbar{}x) =
+  1 + exp (x T β) where y is the binary variable with y = 1 if the woman
+  works and y = 0 if she does not. x is a 8-dimensional vector
+  containing the eight features (including a one for the constant term
+  that models the intercept). The goal is to approximate the posterior
+  distribution of the 8-dim parameter vector β with a multivariate
+  normal distribution   β\textbar{}y, X ∼ N β̃, J y −1 ( β̃) , where β̃
+  is the posterior mode and J( β̃) = − ∂ 2 ln p(β\textbar{}y) \textbar{}
+  β= β̃ is the observed Hes- ∂β∂β T 2 ln p(β\textbar{}y) sian evaluated
+  at the posterior mode. Note that ∂ ∂β∂β is an 8×8 matrix with T 2 ln
+  p(β\textbar{}y) second derivatives on the diagonal and
+  cross-derivatives ∂ ∂β on the off- i ∂β j diagonal. It is actually not
+  hard to compute this derivative by hand, but don't worry, we will let
+  the computer do it numerically for you. Now, both β̃ and J( β̃) are
+  computed by the optim function in R. See my code
+  \url{https://github.com/}
+  mattiasvillani/BayesLearnCourse/raw/master/Code/MainOptimizeSpam. zip
+  where I have coded everything up for the spam prediction example (it
+  also does probit regression, but that is not needed here). I want you
+  to implement you own version of this. You can use my code as a
+  template, but I want you 2to write your own file so that you
+  understand every line of your code. Don't just copy my code. Use the
+  prior β ∼ N (0, τ 2 I), with τ = 10. Your report should include your
+  code as well as numerical values for β̃ and J y −1 ( β̃) for the
+  WomenWork data. Compute an approximate 95\% credible in- terval for
+  the variable NSmallChild. Would you say that this feature is an
+  important determinant of the probability that a women works? {[}Hint:
+  To verify that your results are reasonable, you can compare to you get
+  by estimating the parameters using maximum likelihood: glmModel
+  \textless{}- glm(Work \textasciitilde{} 0 + ., data = WomenWork,
+  family = binomial).{]}
+\end{enumerate}
+
+\begin{verbatim}
+## [1] "Optimal beta:"
+\end{verbatim}
+
+\begin{verbatim}
+## [1]  0.62672884 -0.01979113  0.18021897  0.16756670 -0.14459669 -0.08206561
+## [7] -1.35913317 -0.02468351
+\end{verbatim}
+
+\begin{verbatim}
+##              [,1]          [,2]          [,3]          [,4]          [,5]
+## [1,]  2.266022568  3.338861e-03 -6.545121e-02 -1.179140e-02  0.0457807243
+## [2,]  0.003338861  2.528045e-04 -5.610225e-04 -3.125413e-05  0.0001414915
+## [3,] -0.065451206 -5.610225e-04  6.218199e-03 -3.558209e-04  0.0018962893
+## [4,] -0.011791404 -3.125413e-05 -3.558209e-04  4.351716e-03 -0.0142490853
+## [5,]  0.045780724  1.414915e-04  1.896289e-03 -1.424909e-02  0.0555786706
+## [6,] -0.030293450 -3.588562e-05 -3.240448e-06 -1.340888e-04 -0.0003299398
+## [7,] -0.188748354  5.066847e-04 -6.134564e-03 -1.468951e-03  0.0032082535
+## [8,] -0.098023929 -1.444223e-04  1.752732e-03  5.437105e-04  0.0005120144
+##               [,6]          [,7]          [,8]
+## [1,] -3.029345e-02 -0.1887483542 -0.0980239285
+## [2,] -3.588562e-05  0.0005066847 -0.0001444223
+## [3,] -3.240448e-06 -0.0061345645  0.0017527317
+## [4,] -1.340888e-04 -0.0014689508  0.0005437105
+## [5,] -3.299398e-04  0.0032082535  0.0005120144
+## [6,]  7.184611e-04  0.0051841611  0.0010952903
+## [7,]  5.184161e-03  0.1512621814  0.0067688739
+## [8,]  1.095290e-03  0.0067688739  0.0199722657
+\end{verbatim}
+
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Yes it is an important feature, it's absolute beta value is the highest
+of the entire model. This means the value of the feature has a strong
+impact on the result.
+
+\begin{verbatim}
+##    Constant  HusbandInc   EducYears    ExpYears   ExpYears2         Age 
+##  0.64430363 -0.01977457  0.17988062  0.16751274 -0.14435946 -0.08234033 
+## NSmallChild   NBigChild 
+## -1.36250239 -0.02542986
+\end{verbatim}
+
+Looking at the estimated parameters using maximum likelihood we can see
+that tey are very close the the ones we predicted.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Write a function that simulates from the predictive distribution of
+  the response variable in a logistic regression. Use your normal
+  approximation from 2(a). Use that function to simulate and plot the
+  predictive distribution for the Work variable for a 40 year old woman,
+  with two children (3 and 9 years old), 8 years of education, 10 years
+  of experience. and a husband with an income of 10. {[}Hints: The R
+  package mvtnorm will again be handy. Remember my discussion on how
+  Bayesian prediction can be done by simulation.{]}
+\end{enumerate}
+
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{verbatim}
+## [1] 22
+\end{verbatim}
+
+In our simulation 24\% had a job.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Now, consider 10 women which all have the same features as the woman
+  in 2(b). Rewrite your function and plot the predictive distribution
+  for the number of women, out of these 10, that are working. {[}Hint:
+  Which distribution can be described as a sum of Bernoulli random
+  variables?{]}
+\end{enumerate}
+
+\includegraphics{Computer-Lab-2_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\#\#Code Appendix
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\OperatorTok{::}\NormalTok{opts_chunk}\OperatorTok{$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{#1.}
+\CommentTok{#a).}
+\NormalTok{n <-}\StringTok{ }\DecValTok{1}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"/home/erik/Documents/SML/Semester 2/Bayesian Learning/Labs/Lab2/TempLinkoping.txt"}\NormalTok{, }\DataTypeTok{sep=}\StringTok{""}\NormalTok{)}
+\NormalTok{X <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\DecValTok{1}\NormalTok{,data}\OperatorTok{$}\NormalTok{time,data}\OperatorTok{$}\NormalTok{time}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{mu_}\DecValTok{0}\NormalTok{ <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{10}\NormalTok{,}\DecValTok{130}\NormalTok{,}\OperatorTok{-}\DecValTok{130}\NormalTok{)}
+\NormalTok{sigma2_}\DecValTok{0}\NormalTok{ <-}\StringTok{ }\DecValTok{1}
+\NormalTok{omega_}\DecValTok{0}\NormalTok{ <-}\StringTok{ }\FloatTok{0.1}\OperatorTok{*}\KeywordTok{diag}\NormalTok{(}\DecValTok{3}\NormalTok{)}
+\NormalTok{vu_}\DecValTok{0}\NormalTok{ <-}\StringTok{ }\DecValTok{4}
+
+\KeywordTok{library}\NormalTok{(MASS)}
+\KeywordTok{library}\NormalTok{(mvtnorm)}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{100}\NormalTok{) \{}
+\NormalTok{  sigma2 <-}\StringTok{ }\NormalTok{(sigma2_}\DecValTok{0}\OperatorTok{*}\NormalTok{vu_}\DecValTok{0}\NormalTok{)}\OperatorTok{/}\KeywordTok{rchisq}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1}\NormalTok{, }\DataTypeTok{df =}\NormalTok{ vu_}\DecValTok{0}\NormalTok{)}
+  \CommentTok{#beta_sigma2 <- mvrnorm(n = n, mu = mu_0, Sigma = sigma2*solve(omega_0))}
+\NormalTok{  beta_sigma2 <-}\StringTok{ }\KeywordTok{rmvnorm}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1}\NormalTok{, }\DataTypeTok{mean =}\NormalTok{ mu_}\DecValTok{0}\NormalTok{, }\DataTypeTok{sigma =}\NormalTok{ sigma2}\OperatorTok{*}\KeywordTok{solve}\NormalTok{(omega_}\DecValTok{0}\NormalTok{))}
+  
+  \CommentTok{#temp <- X%*%beta_sigma2}
+\NormalTok{  E <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1}\NormalTok{, }\DataTypeTok{mean =} \DecValTok{0}\NormalTok{,}\DataTypeTok{sd =} \KeywordTok{sqrt}\NormalTok{(sigma2))}
+\NormalTok{  temp <-}\StringTok{ }\NormalTok{X}\OperatorTok{%*%}\KeywordTok{t}\NormalTok{(beta_sigma2) }\OperatorTok{+}\StringTok{ }\NormalTok{E}
+  
+  \ControlFlowTok{if}\NormalTok{ (i }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{) \{}
+    \KeywordTok{plot}\NormalTok{(temp, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{50}\NormalTok{,}\DecValTok{50}\NormalTok{))}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \KeywordTok{lines}\NormalTok{(temp, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+\CommentTok{#b).}
+\NormalTok{X <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(}\DecValTok{1}\NormalTok{,data}\OperatorTok{$}\NormalTok{time,data}\OperatorTok{$}\NormalTok{time}\OperatorTok{^}\DecValTok{2}\NormalTok{)}
+\NormalTok{y <-}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{temp}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{length}\NormalTok{(data}\OperatorTok{$}\NormalTok{time)}
+
+\NormalTok{beta_hat <-}\StringTok{ }\KeywordTok{solve}\NormalTok{(}\KeywordTok{t}\NormalTok{(X) }\OperatorTok{%*%}\StringTok{ }\NormalTok{X) }\OperatorTok{%*%}\StringTok{ }\NormalTok{(}\KeywordTok{t}\NormalTok{(X) }\OperatorTok{%*%}\StringTok{ }\NormalTok{y)}
+\NormalTok{mu_n <-}\StringTok{ }\KeywordTok{solve}\NormalTok{(}\KeywordTok{t}\NormalTok{(X)}\OperatorTok{%*%}\NormalTok{X}\OperatorTok{+}\NormalTok{omega_}\DecValTok{0}\NormalTok{)}\OperatorTok{%*%}\NormalTok{(}\KeywordTok{t}\NormalTok{(X)}\OperatorTok{%*%}\NormalTok{X}\OperatorTok{%*%}\NormalTok{beta_hat}\OperatorTok{+}\NormalTok{omega_}\DecValTok{0}\OperatorTok{%*%}\NormalTok{mu_}\DecValTok{0}\NormalTok{)}
+\NormalTok{omega_n <-}\StringTok{ }\KeywordTok{t}\NormalTok{(X)}\OperatorTok{%*%}\NormalTok{X}\OperatorTok{+}\NormalTok{omega_}\DecValTok{0}
+\NormalTok{vu_n <-}\StringTok{ }\NormalTok{vu_}\DecValTok{0} \OperatorTok{+}\StringTok{ }\NormalTok{n }\CommentTok{#what n?}
+\NormalTok{vu_nsigma2 <-}\StringTok{ }\NormalTok{vu_}\DecValTok{0}\OperatorTok{*}\NormalTok{sigma2_}\DecValTok{0} \OperatorTok{+}\StringTok{ }\NormalTok{(}\KeywordTok{t}\NormalTok{(y)}\OperatorTok{%*%}\NormalTok{y}\OperatorTok{+}\KeywordTok{t}\NormalTok{(mu_}\DecValTok{0}\NormalTok{)}\OperatorTok{%*%}\NormalTok{omega_}\DecValTok{0}\OperatorTok{%*%}\NormalTok{mu_}\DecValTok{0}\OperatorTok{-}\KeywordTok{t}\NormalTok{(mu_n)}\OperatorTok{%*%}\NormalTok{omega_n}\OperatorTok{%*%}\NormalTok{mu_n)}
+
+\NormalTok{sigma2_n <-}\StringTok{ }\KeywordTok{var}\NormalTok{(data}\OperatorTok{$}\NormalTok{temp)}
+\NormalTok{sigma2_i <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{beta_}\DecValTok{0}\NormalTok{ <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{beta_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{beta_}\DecValTok{2}\NormalTok{ <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{f_time <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{f_median <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{100}\NormalTok{) \{}
+\NormalTok{  sigma2 <-}\StringTok{ }\NormalTok{(vu_nsigma2)}\OperatorTok{/}\KeywordTok{rchisq}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1}\NormalTok{, }\DataTypeTok{df =}\NormalTok{ vu_n)}
+\NormalTok{  beta_sigma2 <-}\StringTok{ }\KeywordTok{rmvnorm}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1}\NormalTok{, }\DataTypeTok{mean =}\NormalTok{ mu_n, }\DataTypeTok{sigma =}\NormalTok{ sigma2[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}\OperatorTok{*}\KeywordTok{solve}\NormalTok{(omega_n))}
+  
+  \CommentTok{#temp <- X%*%beta_sigma2}
+\NormalTok{  E <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DataTypeTok{n =} \DecValTok{1}\NormalTok{, }\DataTypeTok{mean =} \DecValTok{0}\NormalTok{,}\DataTypeTok{sd =} \KeywordTok{sqrt}\NormalTok{(sigma2))}
+\NormalTok{  temp <-}\StringTok{ }\NormalTok{X}\OperatorTok{%*%}\KeywordTok{t}\NormalTok{(beta_sigma2) }\OperatorTok{+}\StringTok{ }\NormalTok{E}
+\NormalTok{  f_time <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(f_time, }\KeywordTok{as.vector}\NormalTok{(temp))}
+  
+  \ControlFlowTok{if}\NormalTok{ (i }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{) \{}
+    \KeywordTok{plot}\NormalTok{(temp, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{50}\NormalTok{,}\DecValTok{50}\NormalTok{))}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \KeywordTok{lines}\NormalTok{(temp, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{  beta_}\DecValTok{0}\NormalTok{[i] <-}\StringTok{ }\NormalTok{beta_sigma2[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}
+\NormalTok{  beta_}\DecValTok{1}\NormalTok{[i] <-}\StringTok{ }\NormalTok{beta_sigma2[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{]}
+\NormalTok{  beta_}\DecValTok{2}\NormalTok{[i] <-}\StringTok{ }\NormalTok{beta_sigma2[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{]}
+\NormalTok{  sigma2_i[i] <-}\StringTok{ }\NormalTok{sigma2 }
+\NormalTok{\}}
+\KeywordTok{points}\NormalTok{(f_median)}
+
+
+\KeywordTok{hist}\NormalTok{(beta_}\DecValTok{0}\NormalTok{, }\DataTypeTok{main =} \StringTok{"marginal posterior beta_0"}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(beta_}\DecValTok{1}\NormalTok{, }\DataTypeTok{main =} \StringTok{"marginal posterior beta_1"}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(beta_}\DecValTok{2}\NormalTok{, }\DataTypeTok{main =} \StringTok{"marginal posterior beta_2"}\NormalTok{)}
+\KeywordTok{hist}\NormalTok{(sigma2_i, }\DataTypeTok{main =} \StringTok{"marginal posterior sigma²")}
+
+\StringTok{for (i in 1:365) \{}
+\StringTok{  f_median <- median(f_time[i,])}
+\StringTok{\}}
+
+\StringTok{#95% equal tail credible interval}
+\StringTok{G <- f_time[,1]}
+
+\StringTok{#c).}
+\StringTok{x_max <- -beta_1/(2*beta_2)}
+\StringTok{plot(density(x_max))}
+\StringTok{abline(v=data$time[which.max(f_median)], col = "}\NormalTok{red}\StringTok{")}
+\StringTok{X <- cbind(1,data$time)}
+\StringTok{for (i in 2:7) \{}
+\StringTok{  X <- cbind(X,data$time^i)}
+\StringTok{\}}
+
+\StringTok{mu_0 <- c(-10,130,-130, rep(0.01,5))}
+\StringTok{sigma2_0 <- 1}
+\StringTok{omega_0 <- c(rep(0.02,3),rep(10,5))*diag(8)}
+\StringTok{vu_0 <- 4}
+
+\StringTok{for (i in 1:100) \{}
+\StringTok{  sigma2 <- (sigma2_0*vu_0)/rchisq(n = 1, df = vu_0)}
+\StringTok{  #beta_sigma2 <- mvrnorm(n = n, mu = mu_0, Sigma = sigma2*solve(omega_0))}
+\StringTok{  beta_sigma2 <- rmvnorm(n = 1, mean = mu_0, sigma = sigma2*solve(omega_0))}
+\StringTok{  }
+\StringTok{  #temp <- X%*%beta_sigma2}
+\StringTok{  E <- rnorm(n = 1, mean = 0,sd = sqrt(sigma2))}
+\StringTok{  temp <- X%*%t(beta_sigma2) + E}
+\StringTok{  }
+\StringTok{  if (i == 1) \{}
+\StringTok{    plot(temp, type = "}\NormalTok{l}\StringTok{", ylim = c(-50,50))}
+\StringTok{  \}}
+\StringTok{  else\{}
+\StringTok{    lines(temp, type = "}\NormalTok{l}\StringTok{")}
+\StringTok{  \}}
+\StringTok{\}}
+
+\StringTok{#2.}
+\StringTok{#a).}
+\StringTok{data <- read.table("}\OperatorTok{/}\NormalTok{home}\OperatorTok{/}\NormalTok{erik}\OperatorTok{/}\NormalTok{Documents}\OperatorTok{/}\NormalTok{SML}\OperatorTok{/}\NormalTok{Semester }\DecValTok{2}\OperatorTok{/}\NormalTok{Bayesian Learning}\OperatorTok{/}\NormalTok{Labs}\OperatorTok{/}\NormalTok{Lab2}\OperatorTok{/}\NormalTok{WomenWork.dat}\StringTok{", header = TRUE)}
+\StringTok{n <- dim(data)[1]}
+
+\StringTok{x <- as.matrix(data[,2:9])}
+\StringTok{y <- as.vector(data[,1])}
+
+\StringTok{nPara <- dim(x)[2];}
+
+\StringTok{# Setting up the prior}
+\StringTok{mu <- as.vector(rep(0,nPara))}
+\StringTok{tau <- 10}
+\StringTok{sigma <- tau^2*diag(nPara)}
+
+
+\StringTok{LogPostLogistic <- function(betaVect,y,X,mu,Sigma)\{}
+\StringTok{  }
+\StringTok{  nPara <- length(betaVect);}
+\StringTok{  linPred <- X%*%betaVect;}
+\StringTok{  }
+\StringTok{  # evaluating the log-likelihood                                    }
+\StringTok{  logLik <- sum( linPred*y -log(1 + exp(linPred)));}
+\StringTok{  if (abs(logLik) == Inf) logLik = -20000; # Likelihood is not finite, stear the optimizer away from here!}
+\StringTok{  }
+\StringTok{  # evaluating the prior}
+\StringTok{  logPrior <- dmvnorm(betaVect, matrix(0,nPara,1), Sigma, log=TRUE);}
+\StringTok{  }
+\StringTok{  # add the log prior and log-likelihood together to get log posterior}
+\StringTok{  return(logLik + logPrior)}
+\StringTok{\}}
+
+
+\StringTok{#initVal <- as.vector(rmvnorm(n = 1, mean = rep(0,dim(x)[2]), sigma = tau^2*diag(dim(x)[2])))}
+\StringTok{initVal <- as.vector(rep(0,dim(x)[2]))}
+\StringTok{posterior <- optim(initVal,LogPostLogistic,gr=NULL,y,x,mu,sigma,method=c("}\NormalTok{BFGS}\StringTok{"),control=list(fnscale=-1),hessian=TRUE)}
+\StringTok{posterior_mode <- posterior$par}
+\StringTok{hessian_matrix <- posterior$hessian}
+\StringTok{hessian_sigma <- -solve(posterior$hessian)}
+
+\StringTok{print("}\NormalTok{Optimal beta}\OperatorTok{:}\StringTok{")}
+\StringTok{print(posterior_mode)}
+
+\StringTok{#}
+\StringTok{print(hessian_sigma)}
+
+\StringTok{#95% equal tail credible interval}
+\StringTok{for (i in 1:1000) \{}
+\StringTok{  G[i] <- rnorm(1, posterior_mode[7], hessian_sigma[7,7])}
+\StringTok{\}}
+
+\StringTok{G_sort <- sort(G)}
+\StringTok{#G_cut <- G_sort[(length(G_sort)*0.05):(length(G_sort)*0.95-1)]}
+\StringTok{plot(G_sort)}
+\StringTok{abline(v=(length(G_sort)*0.05), col = "}\NormalTok{red}\StringTok{")}
+\StringTok{abline(v=length(G_sort)*0.95-1, col = "}\NormalTok{red}\StringTok{")}
+\StringTok{#Yes it is an important feature, it's absolute beta value is the highest of the entire model.}
+\StringTok{#This means the value of the feature has a strong impact on the result.}
+
+\StringTok{glmModel <- glm(Work ~ 0 + ., data = data, family = binomial)}
+\StringTok{glmModel$coefficients}
+
+\StringTok{#Looking at the estimated parameters using maximum likelihood we can see that tey are very close the the ones we predicted.}
+
+\StringTok{#b).}
+\StringTok{X <- c(1,10,8,10,1,40,1,1)}
+\StringTok{result <- c()}
+\StringTok{for (i in 1:100) \{}
+\StringTok{  beta_posterior <- rmvnorm(1, posterior_mode, hessian_sigma)}
+\StringTok{  y <- exp(t(X) %*% t(beta_posterior))/(1+(exp(t(X) %*% t(beta_posterior))))}
+\StringTok{  result[i] <- rbinom(1,1, y)}
+\StringTok{\}}
+\StringTok{plot(density(result), main = "}\NormalTok{p. distribution }\ControlFlowTok{for}\NormalTok{ Work}\StringTok{")}
+
+\StringTok{sum(result==1)}
+\StringTok{#c).}
+\StringTok{X <- c(1,10,8,10,1,40,1,1)}
+\StringTok{result <- c()}
+\StringTok{for (i in 1:100) \{}
+\StringTok{  beta_posterior <- rmvnorm(1, posterior_mode, hessian_sigma)}
+\StringTok{  y <- exp(t(X) %*% t(beta_posterior))/(1+(exp(t(X) %*% t(beta_posterior))))}
+\StringTok{  result[i] <- rbinom(1,10, y)}
+\StringTok{\}}
+\StringTok{plot(density(result), main = "}\NormalTok{working women}\StringTok{" , xlab = "}\NormalTok{working women}\StringTok{")}
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}

@@ -1,0 +1,460 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Computer Lab 1},
+            pdfauthor={Dhyey Patel, Erik Anders},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Computer Lab 1}
+\author{Dhyey Patel, Erik Anders}
+\date{4/18/2020}
+
+\begin{document}
+\maketitle
+
+\#\#1. Bernoulli \ldots{} again. Let y 1 , \ldots{}, y n \textbar{}θ ∼
+Bern(θ), and assume that you have obtained a sample with s = 5 successes
+in n = 20 trials. Assume a Beta(α 0 , β 0 ) prior for θ and let α 0 = β
+0 = 2.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  Draw random numbers from the posterior θ\textbar{}y ∼ Beta(α 0 + s, β
+  0 + f ), y = (y 1 , . . . , y n ), and verify graphically that the
+  posterior mean and standard de- viation converges to the true values
+  as the number of random draws grows large.
+\end{enumerate}
+
+\begin{verbatim}
+## [1] "True mean"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.2916667
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "True sd"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.008263889
+\end{verbatim}
+
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-1-1.pdf}
+As shown above, the mean (black) and the standard deviation (red)
+converge very quickly to their true values.
+
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-2-1.pdf}
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-2-2.pdf}
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-2-3.pdf}
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-2-4.pdf}
+
+As we can see from the plots, as n increases from 50 to 1000, the mean
+visually converges to the true mean 0.29.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Use simulation (nDraws = 10000) to compute the posterior probability
+  Pr(θ \textgreater{} 0.3\textbar{}y) and compare with the exact value
+  {[}Hint: pbeta(){]}. θ by simulation
+\end{enumerate}
+
+\begin{verbatim}
+## [1] "simulated probability"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.4406
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "exact probability"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.4399472
+\end{verbatim}
+
+Posterior probability by simulation comes up to be approximately 0.439.
+Posterior probability theoretically is 0.4399.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Compute the posterior distribution of the log-odds φ = log 1−θ (nDraws
+  = 10000). {[}Hint: hist() and density() might come in handy{]}
+\end{enumerate}
+
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\begin{verbatim}
+## 
+## Call:
+##  density.default(x = log_odds)
+## 
+## Data: log_odds (10000 obs.); Bandwidth 'bw' = 0.06534
+## 
+##        x                  y            
+##  Min.   :-3.07403   Min.   :0.0000069  
+##  1st Qu.:-2.05509   1st Qu.:0.0037942  
+##  Median :-1.03615   Median :0.0752536  
+##  Mean   :-1.03615   Mean   :0.2451139  
+##  3rd Qu.:-0.01722   3rd Qu.:0.4592289  
+##  Max.   : 1.00172   Max.   :0.8666984
+\end{verbatim}
+
+\#\#2. Log-normal distribution and the Gini coefficient. Assume that you
+have asked 10 randomly selected persons about their monthly in- come (in
+thousands Swedish Krona) and obtained the following ten observations:
+44, 25, 45, 52, 30, 63, 19, 50, 34 and 67. A common model for
+non-negative continuous variables is the log-normal distribution. The
+log-normal distribution log N (μ, σ 2 ) has density function
+
+\[p(y| \mu, \sigma²) = \frac{1}{y*\sqrt{2\pi\sigma²}}\exp(-\frac{1}{2\sigma²}(\log y-\mu)²),\]
+
+for y \textgreater{} 0, μ \textgreater{} 0 and σ 2 \textgreater{} 0. The
+log-normal distribution is related to the normal distribution as
+follows: if y ∼ log N (μ, σ 2 ) then log y ∼ N (μ, σ 2 ). Let iid y 1 ,
+\ldots{}, y n \textbar{}μ, σ 2 ∼ log N (μ, σ 2 ), where μ = 3.7 is
+assumed to be known but σ 2 is unknown with non-informative prior p(σ 2
+) ∝ 1/σ 2 . The posterior for σ 2 is the Inv − χ 2 (n, τ 2 )
+distribution, where
+
+\[\tau² = \frac{\sum_{i=1}^{n}(\log y_i-\mu)²}{n}\]
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  Simulate 10, 000 draws from the posterior of σ 2 (assuming μ = 3.7)
+  and com- pare with the theoretical Inv − χ 2 (n, τ 2 ) posterior
+  distribution.
+\end{enumerate}
+
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{verbatim}
+## [1] "Simulated mean"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.1869669
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "Simulated variance"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.01215595
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "Theoretical mean"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.1874264
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "Theoretical variance"
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.01170956
+\end{verbatim}
+
+To compare the simulated and theoretical distribution we chose the mean
+and standard deviation. As shown in the output above, they are both very
+close to each other.
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  The most common measure of income inequality is the Gini coefficient,
+  G, where 0 ≤ G ≤ 1. G = 0 means a completely equal income
+  distribution, whereas G = 1 means complete income inequality. √  See
+  Wikipedia for more information. It can be shown that G = 2Φ σ/ 2 − 1
+  when incomes follow a log N (μ, σ 2 ) distribution. Φ(z) is the
+  cumulative distribution function (CDF) for the standard normal
+  distribution with mean zero and unit variance. Use the posterior draws
+  in a) to compute the posterior distribution of the Gini coefficient G
+  for the current data set.
+\end{enumerate}
+
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Use the posterior draws from b) to compute a 90\% equal tail credible
+  interval for G. A 90\% equal tail interval (a, b) cuts off 5\% percent
+  of the posterior probability mass to the left of a, and 5\% to the
+  right of b. Also, do a kernel density estimate of the posterior of G
+  using the density function in R with default settings, and use that
+  kernel density estimate to compute a 90\% Highest Posterior Density
+  interval for G. Compare the two intervals.
+\end{enumerate}
+
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-7-1.pdf}
+\#\# still need to compare
+
+\#\#3. Bayesian inference for the concentration parameter in the von
+Mises distribution. This exercise is concerned with directional data.
+The point is to show you that the posterior distribution for somewhat
+weird models can be obtained by plotting it over a grid of values. The
+data points are observed wind directions at a given location on ten
+different days. The data are recorded in degrees: (40, 303, 326, 285,
+296, 314, 20, 308, 299, 296), where North is located at zero degrees
+(see Figure 1 on the next page, where the angles are measured
+clockwise). To fit with Wikipedias description of probability
+distributions for circular data we convert the data into radians −π ≤ y
+≤ π . The 10 observations in radians are (−2.44, 2.14, 2.54, 1.83, 2.02,
+2.33, −2.79, 2.23, 2.07, 2.02). Assume that these data points are
+independent observations following the von Mises distribution
+
+\[p(y|\mu,\kappa) = \frac{exp(\kappa*\cos(y-\mu))}{2\pi*I_0(\kappa)}, -\pi \leq y \leq +\pi,\]
+
+where I 0 (κ) is the modified Bessel function of the first kind of order
+zero {[}see ?besselI in R{]}. The parameter μ (−π ≤ μ ≤ π) is the mean
+direction and κ \textgreater{} 0 is called the concentration parameter.
+Large κ gives a small variance around μ, and vice versa. Assume that μ
+is known to be 2.39. Let κ ∼ Exponential(λ = 1) a priori, where λ is the
+rate parameter of the exponential distribution (so that the mean is
+1/λ). (a) Plot the posterior distribution of κ for the wind direction
+data over a fine grid of κ values.
+
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Find the (approximate) posterior mode of κ from the information in a).
+\end{enumerate}
+
+\includegraphics{Computer-Lab-1_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\#\#Code Appendix
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\OperatorTok{::}\NormalTok{opts_chunk}\OperatorTok{$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{#1.}
+\CommentTok{#a).}
+
+\NormalTok{avg <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{sdv <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (n }\ControlFlowTok{in} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{100}\NormalTok{,}\DecValTok{1000}\NormalTok{,}\DecValTok{10000}\NormalTok{)) \{}
+\NormalTok{  dist <-}\StringTok{ }\KeywordTok{rbeta}\NormalTok{(}\DataTypeTok{n =}\NormalTok{ n,}\DataTypeTok{shape1 =} \DecValTok{2}\OperatorTok{+}\DecValTok{5}\NormalTok{,}\DataTypeTok{shape2 =} \DecValTok{2}\OperatorTok{+}\DecValTok{15}\NormalTok{)}
+  \CommentTok{#plot(dist)}
+\NormalTok{  avg <-}\StringTok{ }\KeywordTok{c}\NormalTok{(avg,}\KeywordTok{mean}\NormalTok{(dist))}
+\NormalTok{  sdv <-}\StringTok{ }\KeywordTok{c}\NormalTok{(sdv, }\KeywordTok{sd}\NormalTok{(dist))}
+\NormalTok{\}}
+
+\NormalTok{a =}\StringTok{ }\DecValTok{7}
+\NormalTok{b =}\StringTok{ }\DecValTok{17}
+\NormalTok{mean_th =}\StringTok{ }\NormalTok{a}\OperatorTok{/}\NormalTok{(a}\OperatorTok{+}\NormalTok{b)}
+\NormalTok{sd_th =}\StringTok{ }\NormalTok{a}\OperatorTok{*}\NormalTok{b}\OperatorTok{/}\NormalTok{(((a}\OperatorTok{+}\NormalTok{b)}\OperatorTok{^}\DecValTok{2}\NormalTok{) }\OperatorTok{*}\StringTok{ }\NormalTok{(a}\OperatorTok{+}\NormalTok{b}\OperatorTok{+}\DecValTok{1}\NormalTok{)) }
+
+\KeywordTok{print}\NormalTok{(}\StringTok{"True mean"}\NormalTok{)}
+\KeywordTok{print}\NormalTok{(mean_th)}
+\KeywordTok{print}\NormalTok{(}\StringTok{"True sd"}\NormalTok{)}
+\KeywordTok{print}\NormalTok{(sd_th)}
+
+\CommentTok{#E = (alpha + s)/(alpha + s +beta+ f)}
+\CommentTok{# = (alpha + 5)/(alpha + 5+beta + 15)}
+\CommentTok{# = (alpha + 5)/(alpha + beta + 20)}
+\CommentTok{# = 7/24 = 0.2916667}
+
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{100}\NormalTok{,}\DecValTok{1000}\NormalTok{,}\DecValTok{10000}\NormalTok{),avg, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{, }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\FloatTok{0.4}\NormalTok{), }\DataTypeTok{ylab =} \StringTok{"sd, mean"}\NormalTok{)}
+\KeywordTok{lines}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{100}\NormalTok{,}\DecValTok{1000}\NormalTok{,}\DecValTok{10000}\NormalTok{),sdv, }\DataTypeTok{col=}\StringTok{"red"}\NormalTok{)}
+
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{rbeta}\NormalTok{(}\DecValTok{50}\NormalTok{,a,b),}\DataTypeTok{freq =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{breaks =} \DecValTok{20}\NormalTok{)}
+
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{rbeta}\NormalTok{(}\DecValTok{100}\NormalTok{,a,b),}\DataTypeTok{freq =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{breaks =} \DecValTok{20}\NormalTok{)}
+
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{rbeta}\NormalTok{(}\DecValTok{500}\NormalTok{,a,b),}\DataTypeTok{freq =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{breaks =} \DecValTok{20}\NormalTok{)}
+
+\KeywordTok{hist}\NormalTok{(}\KeywordTok{rbeta}\NormalTok{(}\DecValTok{1000}\NormalTok{,a,b),}\DataTypeTok{freq =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{breaks =} \DecValTok{20}\NormalTok{)}
+
+\CommentTok{#b).}
+\NormalTok{dist <-}\KeywordTok{rbeta}\NormalTok{(}\DataTypeTok{n =} \DecValTok{10000}\NormalTok{,}\DataTypeTok{shape1 =} \DecValTok{2}\OperatorTok{+}\DecValTok{5}\NormalTok{,}\DataTypeTok{shape2 =} \DecValTok{2}\OperatorTok{+}\DecValTok{15}\NormalTok{)}
+\KeywordTok{print}\NormalTok{(}\StringTok{"simulated probability"}\NormalTok{)}
+\KeywordTok{sum}\NormalTok{(dist}\OperatorTok{>}\FloatTok{0.3}\NormalTok{)}\OperatorTok{/}\KeywordTok{length}\NormalTok{(dist)}
+\KeywordTok{print}\NormalTok{(}\StringTok{"exact probability"}\NormalTok{)}
+\DecValTok{1}\OperatorTok{-}\KeywordTok{pbeta}\NormalTok{(}\FloatTok{0.3}\NormalTok{,}\DataTypeTok{shape1 =} \DecValTok{2}\OperatorTok{+}\DecValTok{5}\NormalTok{,}\DataTypeTok{shape2 =} \DecValTok{2}\OperatorTok{+}\DecValTok{15}\NormalTok{)}
+
+\CommentTok{#c).}
+\NormalTok{log_odds<-}\KeywordTok{log}\NormalTok{(dist}\OperatorTok{/}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{dist))}
+\KeywordTok{hist}\NormalTok{(log_odds)}
+\KeywordTok{density}\NormalTok{(log_odds)}
+
+\CommentTok{#2.}
+\CommentTok{#a).}
+\NormalTok{obs <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{44}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{45}\NormalTok{,}\DecValTok{52}\NormalTok{,}\DecValTok{30}\NormalTok{,}\DecValTok{63}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{50}\NormalTok{,}\DecValTok{34}\NormalTok{,}\DecValTok{67}\NormalTok{)}
+
+\NormalTok{n <-}\StringTok{ }\DecValTok{10000}
+\NormalTok{tau2 <-}\StringTok{ }\KeywordTok{sum}\NormalTok{((}\KeywordTok{log}\NormalTok{(obs)}\OperatorTok{-}\FloatTok{3.7}\NormalTok{)}\OperatorTok{^}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{(}\KeywordTok{length}\NormalTok{(obs))}
+\NormalTok{posterior <-}\StringTok{ }\NormalTok{((}\KeywordTok{length}\NormalTok{(obs))}\OperatorTok{*}\NormalTok{tau2)}\OperatorTok{/}\KeywordTok{rchisq}\NormalTok{(}\DataTypeTok{n =}\NormalTok{ n, }\DataTypeTok{df =} \KeywordTok{length}\NormalTok{(obs))}
+\KeywordTok{hist}\NormalTok{(posterior)}
+
+\CommentTok{#We compare mean of simulated posterior and theoretical value}
+\CommentTok{#simulated:}
+\KeywordTok{print}\NormalTok{(}\StringTok{"Simulated mean"}\NormalTok{)}
+\KeywordTok{mean}\NormalTok{(posterior)}
+\KeywordTok{print}\NormalTok{(}\StringTok{"Simulated variance"}\NormalTok{)}
+\KeywordTok{var}\NormalTok{(posterior)}
+
+\CommentTok{#theoretical:}
+\KeywordTok{print}\NormalTok{(}\StringTok{"Theoretical mean"}\NormalTok{)}
+\NormalTok{(}\KeywordTok{length}\NormalTok{(obs)}\OperatorTok{*}\NormalTok{tau2)}\OperatorTok{/}\NormalTok{(}\KeywordTok{length}\NormalTok{(obs)}\OperatorTok{-}\DecValTok{2}\NormalTok{)}
+\KeywordTok{print}\NormalTok{(}\StringTok{"Theoretical variance"}\NormalTok{)}
+\NormalTok{(}\DecValTok{2}\OperatorTok{*}\KeywordTok{length}\NormalTok{(obs)}\OperatorTok{^}\DecValTok{2}\OperatorTok{*}\NormalTok{tau2}\OperatorTok{^}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{(((}\KeywordTok{length}\NormalTok{(obs)}\OperatorTok{-}\DecValTok{2}\NormalTok{)}\OperatorTok{^}\DecValTok{2}\NormalTok{) }\OperatorTok{*}\StringTok{ }\NormalTok{(}\KeywordTok{length}\NormalTok{(obs)}\OperatorTok{-}\DecValTok{4}\NormalTok{))}
+
+\CommentTok{#b).}
+\NormalTok{G <-}\StringTok{ }\DecValTok{2}\OperatorTok{*}\StringTok{ }\KeywordTok{pnorm}\NormalTok{(}\DataTypeTok{q =} \KeywordTok{sqrt}\NormalTok{(posterior)}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(}\DecValTok{2}\NormalTok{), }\DataTypeTok{mean =} \DecValTok{0}\NormalTok{, }\DataTypeTok{sd =} \DecValTok{1}\NormalTok{)}\OperatorTok{-}\DecValTok{1}
+\KeywordTok{hist}\NormalTok{(G, }\DataTypeTok{breaks =} \DecValTok{30}\NormalTok{)}
+
+\CommentTok{#c).}
+\CommentTok{#90% equal tail credible interval}
+\NormalTok{G_sort <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(G)}
+\NormalTok{G_cut <-}\StringTok{ }\NormalTok{G_sort[(}\KeywordTok{length}\NormalTok{(G_sort)}\OperatorTok{*}\FloatTok{0.05}\NormalTok{)}\OperatorTok{:}\NormalTok{(}\KeywordTok{length}\NormalTok{(G_sort)}\OperatorTok{*}\FloatTok{0.95}\DecValTok{-1}\NormalTok{)]}
+\KeywordTok{hist}\NormalTok{(G, }\DataTypeTok{breaks =} \DecValTok{30}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\KeywordTok{min}\NormalTok{(G_cut), }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\KeywordTok{max}\NormalTok{(G_cut), }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{)}
+
+\CommentTok{#3.}
+\CommentTok{#a).}
+\NormalTok{wind_dir <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{40}\NormalTok{,}\DecValTok{303}\NormalTok{,}\DecValTok{326}\NormalTok{,}\DecValTok{285}\NormalTok{,}\DecValTok{296}\NormalTok{,}\DecValTok{314}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{308}\NormalTok{,}\DecValTok{299}\NormalTok{,}\DecValTok{296}\NormalTok{)}
+\NormalTok{radians <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{2.44}\NormalTok{,}\FloatTok{2.14}\NormalTok{,}\FloatTok{2.54}\NormalTok{,}\FloatTok{1.83}\NormalTok{,}\FloatTok{2.02}\NormalTok{,}\FloatTok{2.33}\NormalTok{,}\OperatorTok{-}\FloatTok{2.79}\NormalTok{,}\FloatTok{2.23}\NormalTok{,}\FloatTok{2.07}\NormalTok{,}\FloatTok{2.02}\NormalTok{)}
+
+\NormalTok{mu <-}\StringTok{ }\FloatTok{2.39}
+\NormalTok{k <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\FloatTok{0.001}\NormalTok{, }\FloatTok{10.001}\NormalTok{, }\DataTypeTok{by =} \FloatTok{0.001}\NormalTok{)}
+\NormalTok{n <-}\StringTok{ }\KeywordTok{length}\NormalTok{(radians)}
+\NormalTok{ml <-}\StringTok{ }\KeywordTok{exp}\NormalTok{(k}\OperatorTok{*}\KeywordTok{sum}\NormalTok{(}\KeywordTok{cos}\NormalTok{(radians}\OperatorTok{-}\NormalTok{mu)))}\OperatorTok{/}\NormalTok{(}\KeywordTok{besselI}\NormalTok{(k, }\DecValTok{0}\NormalTok{))}\OperatorTok{^}\NormalTok{n}
+\NormalTok{prior <-}\StringTok{ }\KeywordTok{exp}\NormalTok{(}\OperatorTok{-}\NormalTok{k)}
+\CommentTok{#posterior <- exp(k*sum(cos(radians-mu))-k)/(besselI(k, 0))^n}
+\NormalTok{posterior <-}\StringTok{ }\NormalTok{ml }\OperatorTok{*}\StringTok{ }\NormalTok{prior }\CommentTok{#distribution the same but values very small}
+\KeywordTok{plot}\NormalTok{(k,posterior, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{)}
+
+\CommentTok{#b).}
+\KeywordTok{plot}\NormalTok{(k,posterior, }\DataTypeTok{type =} \StringTok{"l"}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\NormalTok{k[}\KeywordTok{which}\NormalTok{(posterior}\OperatorTok{==}\KeywordTok{max}\NormalTok{(posterior))], }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}
